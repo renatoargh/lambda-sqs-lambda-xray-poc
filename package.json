@@ -1,0 +1,38 @@
+{
+  "name": "lambda-sqs-lambda-xray-poc",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "sls offline start --stage dev --host 0.0.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/renatoargh/lambda-sqs-lambda-xray-poc.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/renatoargh/lambda-sqs-lambda-xray-poc/issues"
+  },
+  "homepage": "https://github.com/renatoargh/lambda-sqs-lambda-xray-poc#readme",
+  "dependencies": {
+    "@aws-lambda-powertools/tracer": "^0.6.0",
+    "@aws-sdk/client-sqs": "^3.49.0",
+    "aws-xray-sdk": "^3.3.4",
+    "axios": "^0.24.0",
+    "lodash": "^4.17.21",
+    "uuid": "^8.3.2"
+  },
+  "devDependencies": {
+    "@types/aws-lambda": "^8.10.88",
+    "serverless": "^2.69.1",
+    "serverless-dotenv-plugin": "^3.12.2",
+    "serverless-offline": "^8.3.1",
+    "serverless-plugin-typescript": "^2.1.0",
+    "ts-node": "^10.4.0",
+    "tsc-alias": "^1.5.0",
+    "typescript": "^4.5.4"
+  }
+}

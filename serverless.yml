@@ -1,0 +1,60 @@
+service: lambda-sqs-lambda-xray-poc
+frameworkVersion: '2 || 3'
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+  lambdaHashingVersion: '20201221'
+  tracing:
+    apiGateway: true
+    lambda: true
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - sqs:SendMessage
+      Resource:
+        - !GetAtt PocLambdaSqsLambda.Arn
+	
+    - Effect: Allow
+      Action:
+        - xray:PutTraceSegments
+        - xray:PutTelemetryRecords
+      Resource:
+        - "*"
+
+package:
+  patterns:
+    - '!dist/**'
+    - '**/*.js'
+    - '**/*.json'
+
+functions:
+  poc-producer-lambda:
+    handler: src/producer-lambda.handler
+    events:
+      - httpApi:
+          path: /produce
+          method: post    
+
+  poc-consumer-lambda:
+    handler: src/consumer-lambda.handler
+    events:
+      - sqs:
+          batchSize: 1
+          arn:
+            Fn::GetAtt:
+              - PocLambdaSqsLambda
+              - Arn
+
+resources:
+  Resources:
+    PocLambdaSqsLambda:
+      Type: AWS::SQS::Queue
+      Properties:
+        QueueName: poc-lambda-sqs-lambda
+        VisibilityTimeout: 6
+
+plugins:
+  - serverless-plugin-typescript
+  - serverless-offline
+  - serverless-dotenv-plugin
